@@ -18,12 +18,14 @@ const userRoutes = require('./routes/userRoutes');
 const profilRoutes = require('./routes/profilRoutes');
 const statusChambreRoutes = require('./routes/statusChambreRoutes');
 const chambreRoutes = require('./routes/chambreRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/utilisateurs', userRoutes);
 app.use('/api/profils', profilRoutes);
 app.use('/api/status-chambres', statusChambreRoutes);
 app.use('/api/chambres', chambreRoutes);
+app.use('/api/reservations', reservationRoutes);
 
 app.get('/', (req, res) => {
     res.json({ message: 'Bienvenue sur l\'API Node.js' }); // French greeting as requested implicitly by user language
