@@ -1,4 +1,5 @@
 const Chambre = require('../models/chambreModel');
+const Notification = require('../models/notificationModel');
 
 exports.getAll = async (req, res, next) => {
     try {
@@ -35,6 +36,12 @@ exports.create = async (req, res, next) => {
         }
 
         const result = await Chambre.create({ tarif, IDstatusChambre, numero_Chambre });
+        await Notification.create({
+            type: 'CREATION',
+            message: `Nouvelle chambre créée : ${numero_Chambre}`,
+            entity_type: 'chambre',
+            entity_id: result.insertId
+        });
         res.status(201).json({ IDChambre: result.insertId, message: 'Chambre créée' });
     } catch (error) {
         next(error);
@@ -58,6 +65,14 @@ exports.update = async (req, res, next) => {
 
         const result = await Chambre.update(req.params.id, { tarif, IDstatusChambre, numero_Chambre });
         if (result.affectedRows === 0) return res.status(404).json({ message: 'Chambre non trouvée' });
+
+        await Notification.create({
+            type: 'MODIFICATION',
+            message: `Chambre modifiée : ${numero_Chambre}`,
+            entity_type: 'chambre',
+            entity_id: req.params.id
+        });
+
         res.status(200).json({ message: 'Chambre mise à jour' });
     } catch (error) {
         next(error);
@@ -68,6 +83,14 @@ exports.delete = async (req, res, next) => {
     try {
         const result = await Chambre.delete(req.params.id);
         if (result.affectedRows === 0) return res.status(404).json({ message: 'Chambre non trouvée' });
+
+        await Notification.create({
+            type: 'SUPPRESSION',
+            message: `Chambre supprimée : ${numero_Chambre}`,
+            entity_type: 'chambre',
+            entity_id: req.params.id
+        });
+
         res.status(200).json({ message: 'Chambre supprimée' });
     } catch (error) {
         next(error);

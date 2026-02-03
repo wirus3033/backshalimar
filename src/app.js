@@ -26,6 +26,9 @@ app.use('/api/profils', profilRoutes);
 app.use('/api/status-chambres', statusChambreRoutes);
 app.use('/api/chambres', chambreRoutes);
 app.use('/api/reservations', reservationRoutes);
+app.use('/api/achats', require('./routes/achatRoutes'));
+app.use('/api/uniters', require('./routes/uniterRoutes'));
+app.use('/api/notifications', require('./routes/notificationRoutes'));
 
 app.get('/', (req, res) => {
     res.json({ message: 'Bienvenue sur l\'API Node.js' }); // French greeting as requested implicitly by user language
