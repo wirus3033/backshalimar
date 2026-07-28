@@ -4,10 +4,14 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 const app = express();
+const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000';
+const corsOrigin = process.env.NODE_ENV === 'production'
+    ? CLIENT_URL.split(',').map(origin => origin.trim())
+    : true;
 
 // Middleware
 app.use(helmet());
-app.use(cors());
+app.use(cors({ origin: corsOrigin, credentials: true }));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
